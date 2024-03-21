@@ -4,7 +4,7 @@ project(lesson2 VERSION 0.1.0 LANGUAGES C CXX)
 include(CTest)
 enable_testing()
 
-add_executable(lesson2 main.cpp)
+add_executable(lesson2 main.cpp hello.cpp)
 
 target_compile_features(lesson2 PUBLIC cxx_std_17)
 
