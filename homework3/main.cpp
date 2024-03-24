@@ -10,6 +10,30 @@ int main(int argc, char**argv) {
     int max_value = 50;
     std::string high_scores_filename = "high_scores.txt";
     std::string userName = "";
+    std::map<std::string, int> bestResults;
+
+    std::ifstream in_file{high_scores_filename};
+    if (in_file.is_open()) {
+        std::string line;
+        int attempts, tmpAttempts;
+        while (true) {
+            in_file >> line;
+            in_file >> userName;
+            in_file >> line;
+            in_file >> attempts;
+            if(bestResults.count(userName) == 0) {
+                bestResults[userName] = attempts;
+            } else {
+                tmpAttempts = bestResults[userName];
+                if(tmpAttempts > attempts)
+                    bestResults[userName] = attempts;
+            }
+            in_file.ignore(1000, '\n');
+            if (in_file.fail()) {
+                break;
+            }
+        }
+    }
 
     for(int i = 1; i<argc; i++) {
         param = argv[i];
@@ -19,38 +43,15 @@ int main(int argc, char**argv) {
             std::cout << "max value is " << max_value << "\n";
         }
         if(param == "-table") {
-            std::ifstream in_file{high_scores_filename};
-            if (!in_file.is_open()) {
-                std::cout << "Failed to open file for read: " << high_scores_filename << "!" << std::endl;
-                return -1;
-            }
+            if(bestResults.size() > 0) {
+                std::cout << "High scores table:" << std::endl;
 
-            std::map<std::string, int> bestResults;
-
-		    std::cout << "High scores table:" << std::endl;
-            std::string line;
-            int attempts, tmpAttempts;
-            while (true) {
-                in_file >> line;
-                in_file >> userName;
-                in_file >> line;
-                in_file >> attempts;
-                if(bestResults.count(userName) == 0) {
-                    bestResults[userName] = attempts;
-                } else {
-                    tmpAttempts = bestResults[userName];
-                    if(tmpAttempts > attempts)
-                        bestResults[userName] = attempts;
+                for(auto it = bestResults.begin(); it != bestResults.end(); it++) {
+                    // Print the information to the screen
+                    std::cout << "Username: " << it->first << " attempts: " << it->second << std::endl;
                 }
-                in_file.ignore(1000, '\n');
-                if (in_file.fail()) {
-                    break;
-                }
-            }
-
-            for(auto it = bestResults.begin(); it != bestResults.end(); it++) {
-                // Print the information to the screen
-                std::cout << "Username: " << it->first << " attempts: " << it->second << std::endl;
+            } else {
+                std::cout << "There are no file with results or cannot read file: " << high_scores_filename << "\n";
             }
 
             return 0;
