@@ -7,6 +7,7 @@
  */
 void Ball::setVelocity(const Velocity& velocity) {
     // TODO: место для доработки
+    m_velocity = velocity;
 }
 
 /**
@@ -14,7 +15,7 @@ void Ball::setVelocity(const Velocity& velocity) {
  */
 Velocity Ball::getVelocity() const {
     // TODO: место для доработки
-    return {};
+    return m_velocity;
 }
 
 /**
@@ -27,6 +28,7 @@ Velocity Ball::getVelocity() const {
  */
 void Ball::draw(Painter& painter) const {
     // TODO: место для доработки
+    painter.draw(m_center, m_radius, m_color);
 }
 
 /**
@@ -35,6 +37,7 @@ void Ball::draw(Painter& painter) const {
  */
 void Ball::setCenter(const Point& center) {
     // TODO: место для доработки
+    m_center = center;
 }
 
 /**
@@ -42,7 +45,7 @@ void Ball::setCenter(const Point& center) {
  */
 Point Ball::getCenter() const {
     // TODO: место для доработки
-    return {};
+    return m_center;
 }
 
 /**
@@ -52,7 +55,7 @@ Point Ball::getCenter() const {
  */
 double Ball::getRadius() const {
     // TODO: место для доработки
-    return {};
+    return m_radius;
 }
 
 /**
@@ -64,5 +67,33 @@ double Ball::getRadius() const {
  */
 double Ball::getMass() const {
     // TODO: место для доработки
-    return {};
+    return M_PI * m_radius*m_radius*m_radius * 4 / 3;
+}
+
+void Ball::setColor(const Color& color)
+{
+    m_color = color;
+}
+
+void Ball::setRadius(double radius)
+{
+    m_radius = radius;
+}
+
+std::istream& operator>>(std::istream &is, Ball ball) {
+    double x, y, vx, vy, red, green, blue, radius;
+    bool isCollidable;
+    is >> x >> y;
+    ball.setCenter(Point({x, y}));
+
+    is >> vx >> vy;
+    //m_velocity.setVector({vx, vy});
+    ball.setVelocity(Velocity(Point({vx, vy})));
+
+    is >> red >> green >> blue;
+    //m_color = Color(red, green, blue);
+    ball.setColor({red, green, blue});
+    is >> std::boolalpha >> isCollidable;
+
+    return is;
 }
