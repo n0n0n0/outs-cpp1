@@ -1,5 +1,6 @@
 #pragma once
 #include <istream>
+#include <fstream>
 #include "Painter.hpp"
 #include "Point.hpp"
 #include "Velocity.hpp"
@@ -15,9 +16,12 @@ public:
     double getMass() const;
     void setColor(const Color& color);
     void setRadius(double radius);
+    bool isCollidable();
+    void setIsCollidable(bool isCollidable);
 private:
     Velocity    m_velocity;
     Point       m_center;
     double      m_radius;
     Color       m_color;
+    bool        m_isCollidable;
 };

@@ -2,11 +2,39 @@
 #include "Painter.hpp"
 #include "Ball.hpp"
 #include <fstream>
+#include <iostream>
 
 // Длительность одного тика симуляции.
 // Подробнее см. update()
 // Изменять не следует
 static constexpr double timePerTick = 0.001;
+
+std::ifstream& operator>>(std::ifstream &is, Ball &ball) {
+    double x, y, vx, vy, red, green, blue, radius;
+    bool isCollidable;
+    // Читаем координаты центра шара (x, y) и вектор
+    // его скорости (vx, vy)
+    is >> x >> y;
+    ball.setCenter(Point({x, y}));
+    is >> vx >> vy;
+    ball.setVelocity(Point({vx, vy}));
+
+    // Читаем три составляющие цвета шара
+    is >> red >> green >> blue;
+    ball.setColor({red, green, blue});
+
+    // Читаем радиус шара
+    is >> radius;
+    ball.setRadius(radius);
+
+    // Читаем свойство шара isCollidable, которое
+    // указывает, требуется ли обрабатывать пересечение
+    // шаров как столкновение. Если true - требуется.
+    is >> std::boolalpha >> isCollidable;
+    ball.setIsCollidable(isCollidable);
+
+    return is;
+}
 
 /**
  * Конструирует объект мира для симуляции
@@ -27,55 +55,15 @@ World::World(const std::string& worldFilePath) {
     stream >> topLeft.x >> topLeft.y >> bottomRight.x >> bottomRight.y;
     physics.setWorldBox(topLeft, bottomRight);
 
-    /**
-     * TODO: хорошее место для улучшения.
-     * (x, y) и (vx, vy) - составные части объекта, также
-     * как и (red, green, blue). Опять же, можно упростить
-     * этот код, научившись читать сразу Point, Color...
-     */
-    double x;
-    double y;
-    double vx;
-    double vy;
-    double radius;
-
-    double red;
-    double green;
-    double blue;
-
-    bool isCollidable;
-
-    //Ball ball;
-
     // Здесь не хватает обработки ошибок, но на текущем
     // уровне прохождения курса нас это устраивает
     while (stream.peek(), stream.good()) {
-        // Читаем координаты центра шара (x, y) и вектор
-        // его скорости (vx, vy)
-        // stream >> x >> y >> vx >> vy;
-        // Читаем три составляющие цвета шара
-        // stream >> red >> green >> blue;
-        // Читаем радиус шара
-        // stream >> radius;
-        // Читаем свойство шара isCollidable, которое
-        // указывает, требуется ли обрабатывать пересечение
-        // шаров как столкновение. Если true - требуется.
-        // В базовой части задания этот параметр
-        // stream >> std::boolalpha >> isCollidable;
-
-        Ball ball;
-        stream >> ball;
-
         // TODO: место для доработки.
         // Здесь не хватает самого главного - создания
         // объекта класса Ball со свойствами, прочитанными
         // выше, и его помещения в контейнер balls
-        //Ball ball;
-
-        // ball.setCenter({x, y});
-        // ball.setVelocity(Point({vx, vy}));
-        // ball.setColor({red, green, blue});
-        // ball.setRadius(radius);
+        Ball ball;
+        stream >> ball;
 
         // После того как мы каким-то образом
         // сконструируем объект Ball ball;

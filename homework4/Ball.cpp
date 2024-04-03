@@ -80,20 +80,12 @@ void Ball::setRadius(double radius)
     m_radius = radius;
 }
 
-std::istream& operator>>(std::istream &is, Ball ball) {
-    double x, y, vx, vy, red, green, blue, radius;
-    bool isCollidable;
-    is >> x >> y;
-    ball.setCenter(Point({x, y}));
+bool Ball::isCollidable()
+{
+    return m_isCollidable;
+}
 
-    is >> vx >> vy;
-    //m_velocity.setVector({vx, vy});
-    ball.setVelocity(Velocity(Point({vx, vy})));
-
-    is >> red >> green >> blue;
-    //m_color = Color(red, green, blue);
-    ball.setColor({red, green, blue});
-    is >> std::boolalpha >> isCollidable;
-
-    return is;
+void Ball::setIsCollidable(bool isCollidable)
+{
+    m_isCollidable = isCollidable;
 }
