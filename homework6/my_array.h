@@ -76,6 +76,8 @@ public:
         return m_count;
     }
 
+    bool isEmpty() const { return m_count == 0; }
+
     T& operator[] (size_t index) const {
         // index > m_count ?
         return m_data[index];

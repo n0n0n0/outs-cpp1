@@ -20,3 +20,19 @@ assert(1 == 2);
 5. Запускаем тесты `ctest --test-dir build`
 
 ### Google Test
+1. Подключаем библиотеку goolge test через cmake fetch механизм (скачивает с github)
+2. Можно писать много тестов в одном файле. Также лучше отдельная папка gtests и там CMakeLists.txt с fetch и т.п.
+3. В файле тест пишется так (tests.cpp main функция не нужна, google test сам её делает)
+```cpp
+#include <my_lib>
+
+TEST(GroupNameAny, test_name) {
+    ASSERT_TRUE(1 == 1);
+    ASSERT_FALSE(1 == 2);
+}
+```
+4. Можно отключить группу тестов в названии сделав префикс DISABLED_ `TEST(DISABLED_GroupCool, suite1)`
+5. Есть также вместо ASSERT (которая завершает тест) EXPECT_TRUE, EXPECT_FALSE не завершают тест
+6. Документация есть [тут](https://google.github.io/googletest/)
+7. Вроде неплохое расширение для VSCode - C++ TestMate в левой панели становится возможным запускать Google Tests
+8. В ручную запускаются через скомпилированный exe-шник в build директории типа `.\build\gtests\tests.exe`
