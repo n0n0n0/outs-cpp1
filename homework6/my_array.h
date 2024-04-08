@@ -116,19 +116,23 @@ public:
 
     bool isEmpty() const { return m_count == 0; }
 
+    void setDebugMode(bool mode) { m_debugMode = mode; }
+
     T& operator[] (size_t index) const {
         // index > m_count ?
         return m_data[index];
     }
 
     ~MyArray() {
-        std::cout << "MyArray::~MyArray() - destructor start \n";
+        if(m_debugMode)
+            std::cout << "MyArray::~MyArray() - destructor start \n";
         delete [] m_data;
     }
 
 private:
     T *m_data;
     size_t m_count;
+    bool m_debugMode = false;
 };
 
 }

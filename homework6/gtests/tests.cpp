@@ -108,6 +108,7 @@ TEST(TestMyArray, copy_ctor) {
 
 TEST(TestMyArray, check_destructor) {
     MyArray<Complex> a;
+    a.setDebugMode(true);
     a.push_back(Complex(1, 2));
     a.push_back(Complex(2, 3));
     a.push_back(Complex(3, 4));
