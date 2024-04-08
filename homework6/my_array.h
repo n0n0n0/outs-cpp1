@@ -3,6 +3,29 @@
 
 namespace my_containers {
 
+class Complex
+{
+private:
+    /* data */
+    float m_real;
+    float m_im;
+public:
+    Complex() : m_real{0}, m_im{0} {
+        Complex::dsCount = 0;
+    }
+
+    Complex(float real, float im) : m_real{real}, m_im{im} {
+        Complex::dsCount = 0;
+    }
+
+    ~Complex() {
+        ++dsCount;
+        std::cout << "Complex::~Complex() destructor start! i: " << dsCount << "\n";
+    }
+
+    inline static size_t dsCount;
+};
+
 template <typename T>
 class MyArray {
 public:
@@ -12,6 +35,21 @@ public:
     
     explicit MyArray(size_t size) : m_count{size} {
         m_data = new T[size];
+    }
+
+    MyArray(const MyArray<T> &other) {
+        std::cout << "MyArray::MyArray(const MyArray<T>) - copy constructor start \n";
+        if(other.size() == 0 ) {
+            m_data = nullptr;
+            m_count = 0;
+            return;
+        }
+        m_data = new T[other.size()];
+        for(int i = 0; i < other.size(); i++) {
+            m_data[i] = other[i];
+        }
+
+        m_count = other.size();
     }
 
     void push_back(T el) {
@@ -81,6 +119,11 @@ public:
     T& operator[] (size_t index) const {
         // index > m_count ?
         return m_data[index];
+    }
+
+    ~MyArray() {
+        std::cout << "MyArray::~MyArray() - destructor start \n";
+        delete [] m_data;
     }
 
 private:
