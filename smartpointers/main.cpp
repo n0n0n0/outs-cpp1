@@ -76,7 +76,7 @@ public:
         other.m_ptr = nullptr; 
     }
 
-    SmartPtrTracerReset<T> &operator=(SmartPtrTracer<T> &&other) {
+    SmartPtrTracerReset<T> &operator=(SmartPtrTracerReset<T> &&other) {
         std::cout << "SmartPtrTracerReset operator= for && for: " << m_counter << "\n";
         delete m_ptr;
         m_ptr = other.m_ptr;
@@ -200,11 +200,11 @@ int main(int, char**){
 
     std::cout << " --------- scope NullServiceTpl with SmartPtrTracerReset<int> as tpl member ------ \n";
     {
-        NullServiceTpl<SmartPtrTracer<int>> ns3;
+        NullServiceTpl<SmartPtrTracerReset<int>> ns3;
     }
 
     std::cout << " --------- scope NullServiceTplReset with SmartPtrTracerReset<int> as tpl member ------ \n";
-    // {
-    //     NullServiceTpl<SmartPtrTracerReset<int>> ns4;
-    // }
+    {
+        NullServiceTpl<SmartPtrTracerReset<int>> ns4;
+    }
 }
