@@ -5,6 +5,7 @@ include(CTest)
 enable_testing()
 
 add_executable(smartptr main.cpp)
+add_executable(lambda_scope lambda_scope.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
